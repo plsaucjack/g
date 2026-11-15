@@ -73,33 +73,40 @@ body::after{
 }
 
 /* ===================================================================
-   PAGE LAYOUT
+   PAGE LAYOUT — centered, full viewport, safe areas
 =================================================================== */
 .page{
   position:relative;
   z-index:2;
   min-height:100vh;min-height:100svh;
   display:flex;flex-direction:column;
-  padding:clamp(28px,4vw,48px) clamp(20px,5vw,56px);
+  padding:
+    max(clamp(20px,4vw,40px),env(safe-area-inset-top))
+    clamp(16px,5vw,56px)
+    max(clamp(20px,4vw,40px),env(safe-area-inset-bottom))
+    clamp(16px,5vw,56px);
   max-width:1280px;
   margin:0 auto;
+  width:100%;
 }
 
 /* ===================================================================
-   TOP BAR — status + locale
+   TOP BAR
 =================================================================== */
 .topbar{
   display:flex;align-items:center;justify-content:space-between;
-  padding-bottom:28px;
+  padding-bottom:24px;
   border-bottom:1px solid var(--line);
   font-size:11px;letter-spacing:.24em;text-transform:uppercase;
   color:var(--ink);
+  flex-shrink:0;
 }
 .topbar-left{display:flex;align-items:center;gap:12px}
 .live-dot{
   width:7px;height:7px;border-radius:50%;background:#4caf7a;
   box-shadow:0 0 12px #4caf7a;
   animation:pulse 2s ease-in-out infinite;
+  flex-shrink:0;
 }
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.45}}
 .topbar-right{
@@ -109,6 +116,7 @@ body::after{
   letter-spacing:.08em;
   color:var(--champagne);
   text-transform:none;
+  flex-shrink:0;
 }
 
 /* ===================================================================
@@ -116,57 +124,54 @@ body::after{
 =================================================================== */
 .hero{
   flex:1;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  padding:clamp(60px,10vw,120px) 0;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding:clamp(40px,7vw,100px) 0;
   position:relative;
   text-align:center;
+  width:100%;
+  min-height:0;
 }
 
-/* Ornamental corner brackets */
+/* Frame wrapper */
 .hero-frame{
   position:relative;
   max-width:720px;
   width:100%;
-  padding:clamp(40px,6vw,80px) clamp(30px,5vw,60px);
-}
-.hero-frame::before,
-.hero-frame::after{
-  content:"";
-  position:absolute;
-  width:44px;height:44px;
-  border:1px solid rgba(212,180,114,.4);
-}
-.hero-frame::before{
-  top:0;left:0;
-  border-right:none;border-bottom:none;
-}
-.hero-frame::after{
-  bottom:0;right:0;
-  border-left:none;border-top:none;
-}
-.hero-frame-tr,
-.hero-frame-bl{
-  position:absolute;
-  width:44px;height:44px;
-  border:1px solid rgba(212,180,114,.4);
-}
-.hero-frame-tr{
-  top:0;right:0;
-  border-left:none;border-bottom:none;
-}
-.hero-frame-bl{
-  bottom:0;left:0;
-  border-right:none;border-top:none;
+  padding:clamp(32px,5vw,70px) clamp(24px,4vw,56px);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
 }
 
+/* Ornamental corner brackets — all 4 corners */
+.hero-frame::before,
+.hero-frame::after,
+.hero-frame-tr,
+.hero-frame-bl{
+  content:"";
+  position:absolute;
+  width:clamp(28px,4vw,44px);
+  height:clamp(28px,4vw,44px);
+  border:1px solid rgba(212,180,114,.4);
+  pointer-events:none;
+}
+.hero-frame::before{top:0;left:0;border-right:none;border-bottom:none}
+.hero-frame::after{bottom:0;right:0;border-left:none;border-top:none}
+.hero-frame-tr{top:0;right:0;border-left:none;border-bottom:none}
+.hero-frame-bl{bottom:0;left:0;border-right:none;border-top:none}
+
 /* ===================================================================
-   MONOGRAM — club emblem
+   MONOGRAM
 =================================================================== */
 .monogram{
   position:relative;
-  width:clamp(96px,11vw,128px);
+  width:clamp(84px,10vw,120px);
   aspect-ratio:1;
-  margin:0 auto clamp(32px,4vw,44px);
+  margin:0 auto clamp(28px,3.5vw,40px);
+  flex-shrink:0;
 }
 .monogram-ring{
   position:absolute;inset:0;
@@ -183,14 +188,14 @@ body::after{
   top:50%;left:50%;
   transform:translate(-50%,-50%);
   font-family:"Playfair Display",Georgia,serif;
-  font-size:clamp(44px,6vw,60px);
+  font-size:clamp(38px,5vw,56px);
   color:var(--champagne-light);
   text-shadow:
     0 0 20px rgba(212,180,114,.35),
     0 2px 4px rgba(0,0,0,.6);
   font-weight:500;
+  line-height:1;
 }
-/* Decorative flourishes on either side */
 .monogram-flourish{
   position:absolute;
   top:50%;
@@ -207,7 +212,7 @@ body::after{
   left:calc(100% + 16px);
 }
 .monogram-flourish::after{
-  content:"";position:absolute;top:50%;transform:translateY(-50%);
+  content:"";position:absolute;top:50%;
   width:5px;height:5px;
   background:var(--champagne);
   transform:translateY(-50%) rotate(45deg);
@@ -226,28 +231,28 @@ body::after{
   letter-spacing:.3em;
   text-transform:uppercase;
   color:var(--champagne);
-  margin-bottom:36px;
+  margin-bottom:clamp(24px,3vw,36px);
+  text-wrap:nowrap;
 }
 .eyebrow::before,.eyebrow::after{
   content:"";
-  width:28px;height:1px;
+  width:clamp(20px,3vw,32px);height:1px;
   background:linear-gradient(90deg,transparent,var(--champagne));
+  flex-shrink:0;
 }
-.eyebrow::after{
-  background:linear-gradient(-90deg,transparent,var(--champagne));
-}
+.eyebrow::after{background:linear-gradient(-90deg,transparent,var(--champagne))}
 
 /* ===================================================================
    HEADLINE
 =================================================================== */
 h1{
   font-family:"Playfair Display",Georgia,"Times New Roman",serif;
-  font-size:clamp(44px,7vw,92px);
-  line-height:1.02;
+  font-size:clamp(38px,6.5vw,88px);
+  line-height:1.05;
   letter-spacing:-.02em;
   font-weight:500;
   color:var(--paper);
-  margin-bottom:32px;
+  margin-bottom:clamp(24px,3vw,32px);
   text-wrap:balance;
 }
 h1 em{
@@ -255,9 +260,8 @@ h1 em{
   color:var(--champagne-light);
   font-weight:500;
   position:relative;
+  display:inline-block;
 }
-
-/* Underline swoosh under italic phrase */
 h1 em::after{
   content:"";
   position:absolute;
@@ -275,50 +279,55 @@ h1 em::after{
    LEDE
 =================================================================== */
 .lede{
-  max-width:540px;
-  margin:0 auto 48px;
-  font-size:clamp(16px,1.3vw,18px);
-  line-height:1.7;
+  max-width:520px;
+  margin:0 auto clamp(32px,4vw,44px);
+  font-size:clamp(15px,1.3vw,18px);
+  line-height:1.65;
   color:#b8ad92;
   font-weight:400;
 }
 .lede strong{color:var(--paper);font-weight:600}
 
-/* Thin divider */
+/* ===================================================================
+   DIVIDER
+=================================================================== */
 .divider{
-  display:flex;align-items:center;justify-content:center;gap:16px;
-  margin-bottom:40px;
+  display:flex;align-items:center;justify-content:center;gap:14px;
+  margin-bottom:clamp(28px,3.5vw,40px);
   opacity:.7;
 }
 .divider-line{
-  width:60px;height:1px;
+  width:clamp(40px,6vw,60px);height:1px;
   background:linear-gradient(90deg,transparent,var(--champagne));
 }
-.divider-line.right{
-  background:linear-gradient(-90deg,transparent,var(--champagne));
-}
+.divider-line.right{background:linear-gradient(-90deg,transparent,var(--champagne))}
 .divider-mark{
   color:var(--champagne);
   font-family:Georgia,serif;
   font-size:10px;
-  letter-spacing:.3em;
 }
 
 /* ===================================================================
    CTA
 =================================================================== */
-.cta-wrap{display:flex;flex-direction:column;align-items:center;gap:20px}
+.cta-wrap{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:18px;
+  width:100%;
+}
 .cta{
   display:inline-flex;align-items:center;justify-content:center;
-  gap:18px;
-  min-height:68px;
-  padding:0 44px;
+  gap:16px;
+  min-height:64px;
+  padding:0 clamp(24px,4vw,44px);
   background:linear-gradient(180deg,#eccf8e 0%,#d4b472 55%,#9a7a3a 100%);
   color:#1a1208;
   font-family:Inter,sans-serif;
-  font-size:13px;
+  font-size:clamp(12px,1.2vw,13px);
   font-weight:800;
-  letter-spacing:.2em;
+  letter-spacing:.16em;
   text-transform:uppercase;
   border-radius:999px;
   border:1px solid rgba(255,235,185,.5);
@@ -331,8 +340,9 @@ h1 em::after{
   transition:transform .3s ease,filter .3s ease,box-shadow .3s ease;
   position:relative;
   overflow:hidden;
+  max-width:420px;
+  width:100%;
 }
-/* Shimmer effect */
 .cta::before{
   content:"";position:absolute;
   top:0;left:-100%;
@@ -351,26 +361,28 @@ h1 em::after{
 }
 .cta:hover::before{left:100%}
 .cta svg{width:18px;height:18px;flex:none;position:relative;z-index:1}
-.cta span{position:relative;z-index:1}
-.cta .arrow{font-size:20px;font-weight:400;transition:transform .3s ease}
+.cta span.label{position:relative;z-index:1;white-space:nowrap}
+.cta .arrow{font-size:20px;font-weight:400;transition:transform .3s ease;position:relative;z-index:1}
 .cta:hover .arrow{transform:translateX(4px)}
 
 .cta-note{
   color:var(--ink);
-  font-size:12px;
+  font-size:11px;
   letter-spacing:.14em;
   text-transform:uppercase;
+  text-align:center;
 }
-.cta-note span{color:var(--champagne);margin:0 8px}
+.cta-note .sep{color:var(--champagne);margin:0 8px}
 
 /* ===================================================================
    FOOTER
 =================================================================== */
 .foot{
-  padding-top:28px;
+  padding-top:24px;
   border-top:1px solid var(--line);
   display:flex;justify-content:space-between;align-items:center;gap:20px;
   font-size:10px;letter-spacing:.2em;color:#60594b;text-transform:uppercase;
+  flex-shrink:0;
 }
 .foot-brand{
   font-family:"Playfair Display",Georgia,serif;
@@ -382,31 +394,119 @@ h1 em::after{
 }
 
 /* ===================================================================
-   MOBILE
+   RESPONSIVE BREAKPOINTS
 =================================================================== */
-@media(max-width:720px){
-  .topbar{font-size:10px;letter-spacing:.18em}
+
+/* Tablets / large phones landscape */
+@media(max-width:900px){
+  .topbar{font-size:10px;letter-spacing:.2em}
   .topbar-right{font-size:12px}
-  .hero-frame{padding:36px 16px}
-  .hero-frame::before,.hero-frame::after,
-  .hero-frame-tr,.hero-frame-bl{width:30px;height:30px}
-  .monogram-flourish{display:none}
-  h1{font-size:clamp(38px,11vw,60px)}
-  .lede{font-size:15px;margin-bottom:36px}
-  .cta{
-    width:100%;max-width:400px;
-    padding:0 24px;font-size:12px;letter-spacing:.16em;
-    min-height:62px;
+}
+
+/* Standard mobile phones */
+@media(max-width:600px){
+  .page{
+    padding-left:clamp(16px,5vw,24px);
+    padding-right:clamp(16px,5vw,24px);
   }
-  .cta-note{font-size:11px;letter-spacing:.1em}
-  .foot{flex-direction:column;gap:14px;text-align:center;font-size:9px;padding-top:24px}
+  .topbar{
+    font-size:9px;
+    letter-spacing:.18em;
+    padding-bottom:20px;
+    gap:12px;
+  }
+  .topbar-right{font-size:11px;letter-spacing:.06em}
+  .hero{padding:40px 0}
+  .hero-frame{
+    padding:36px 20px;
+    max-width:100%;
+  }
+  .monogram-flourish{display:none}
+  h1{
+    font-size:clamp(34px,10vw,56px);
+    line-height:1.08;
+  }
+  .lede{
+    font-size:15px;
+    line-height:1.65;
+  }
+  .divider{margin-bottom:28px}
+  .cta{
+    min-height:60px;
+    font-size:12px;
+    letter-spacing:.14em;
+    padding:0 20px;
+  }
+  .cta svg{width:16px;height:16px}
+  .cta .arrow{font-size:18px}
+  .cta-note{font-size:10px;letter-spacing:.1em}
+  .foot{
+    flex-direction:column;
+    gap:12px;
+    text-align:center;
+    font-size:9px;
+    padding-top:20px;
+  }
+  .foot-brand{font-size:13px}
 }
-@media(max-width:400px){
-  h1{font-size:36px}
-  .eyebrow{font-size:10px;letter-spacing:.22em;margin-bottom:28px}
-  .eyebrow::before,.eyebrow::after{width:20px}
-  .monogram{width:84px}
+
+/* Narrow phones (iPhone SE, mini) */
+@media(max-width:420px){
+  .topbar-right{display:none}
+  .hero-frame{padding:30px 14px}
+  .hero-frame::before,
+  .hero-frame::after,
+  .hero-frame-tr,
+  .hero-frame-bl{
+    width:24px;height:24px;
+  }
+  h1{font-size:clamp(30px,10vw,40px)}
+  .lede{font-size:14px;margin-bottom:28px}
+  .eyebrow{
+    font-size:9px;
+    letter-spacing:.22em;
+    gap:10px;
+    margin-bottom:22px;
+  }
+  .eyebrow::before,.eyebrow::after{width:18px}
+  .monogram{
+    width:76px;
+    margin-bottom:24px;
+  }
+  .cta{
+    min-height:56px;
+    font-size:11px;
+    letter-spacing:.12em;
+  }
 }
+
+/* Short screens (landscape phones) */
+@media(max-height:700px) and (max-width:900px){
+  .page{
+    padding-top:16px;
+    padding-bottom:16px;
+  }
+  .topbar{padding-bottom:16px}
+  .hero{padding:24px 0}
+  .hero-frame{padding:28px 20px}
+  .monogram{
+    width:64px;
+    margin-bottom:18px;
+  }
+  .eyebrow{margin-bottom:18px}
+  h1{
+    font-size:clamp(28px,5vw,44px);
+    margin-bottom:18px;
+  }
+  .lede{
+    margin-bottom:22px;
+    font-size:14px;
+    line-height:1.5;
+  }
+  .divider{margin-bottom:20px}
+  .foot{padding-top:16px}
+}
+
 @media(prefers-reduced-motion:reduce){
   *,*::before,*::after{animation:none!important;transition:none!important}
 }
@@ -467,10 +567,10 @@ h1 em::after{
           <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
             <path d="M21.5 3.5 2.5 11l6 2.3L18 6.5l-7 8.2v4.8l3-3.4 4.8 3.5z"/>
           </svg>
-          <span>Войти через Telegram</span>
+          <span class="label">Войти через Telegram</span>
           <span class="arrow">→</span>
         </a>
-        <p class="cta-note">Без регистрации<span>·</span>один клик</p>
+        <p class="cta-note">Без регистрации<span class="sep">·</span>один клик</p>
       </div>
 
     </div>
